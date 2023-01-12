@@ -10,31 +10,35 @@ from app import *
 import time
 import datetime
 
-
-#==========Import e tratamento dos dados=========#
-list_id = "187019727"
-url = "https://api.clickup.com/api/v2/list/" + list_id + "/task"
-
-query = {
-  "archived": "True",
-  "page": "1",
-  "reverse": "true",
-  "subtasks": "true",
-  "include_closed": "true"
-}
-
-headers = {
-  "Content-Type": "application/json",
-  "Authorization": "pk_43022943_BG7N2IWWCEB36JHO7PNS71EQEP2M7K30"
-}
-
-response = requests.get(url, headers=headers, params=query)
 json = []
-data = response.json()
+
+def requisicao(pagina):
+    
+    #==========Import e tratamento dos dados=========#
+    list_id = "187019727"
+    url = "https://api.clickup.com/api/v2/list/" + list_id + "/task"
+
+    query = {
+    "archived": "True",
+    "page": pagina,
+    "reverse": "true",
+    "subtasks": "true",
+    "include_closed": "true"
+    }
+
+    headers = {
+    "Content-Type": "application/json",
+    "Authorization": "pk_43022943_BG7N2IWWCEB36JHO7PNS71EQEP2M7K30"
+    }
+
+    response = requests.get(url, headers=headers, params=query)
+    data = response.json()
+    return data
+
 
 def organizar_json(data):
+  lista_Json = []  
   list_id_itens = ["1e5c6ba4-aa42-49e0-8b21-4a1ca1cc4635", "30881d36-37f8-4736-b2d5-e8d9d771df99", "d6ee9063-4d4e-4677-b66f-9950db5f17a1", "94899730-a87f-4fd6-964b-b149a796ee85", "8f11bbbd-32d7-42e0-90bd-85d2218061a7", "30fcc6ad-662c-4c3b-9195-29ca24e2bc4f", "54fcdfdd-6ea6-4a4a-b27c-99b84affaaca"]
-  lista_Json = []
   for i in data['tasks']:
     list_apoio = []
     for y in i['custom_fields']:
@@ -60,7 +64,9 @@ def organizar_json(data):
     lista_Json.append([sprint, status, date_Criacao, date_update, list_apoio, id, id_pai])
   return lista_Json
 
-json = organizar_json(data)
+
+for i in range(2):
+    json += organizar_json(requisicao(i))
 
 lista_organizada = []
 colunas = ['id','id_pai','sprint', 'status', 'dateCreate', 'dateUpdate', 'nome', 'pontos']
@@ -248,7 +254,7 @@ def big_numbers(list_dev, data_inicio, data_fim):
     """data_inicio = '01/10/2022'
     data_fim = '31/12/2022'"""
 
-    list_dev = ['Dante', 'Dionísio', 'Leandro', 'Leandro Gama', 'Lopes', 'Lucas', 'Ricson']
+    #list_dev = ['Dante', 'Dionísio', 'Leandro', 'Leandro Gama', 'Lopes', 'Lucas', 'Ricson']
     df_list_por_dev = df[df["nome"].isin(list_dev)]
     df_list_por_dev = filtroData(df_list_por_dev, data_inicio, data_fim).dropna()
     df_media = df_list_por_dev[df_list_por_dev["status"] == "executado"]['pontos'].mean()
