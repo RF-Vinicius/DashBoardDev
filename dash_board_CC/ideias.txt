@@ -1,0 +1,14 @@
+[ ]. Mudar componente de input de data para "https://dash-bootstrap-components.opensource.faculty.ai/docs/components/form/"
+[ ]. Usar states para que só filtre assim que clicar em submit
+[X]. Adicionar no gráfico de pontos gerais um gráfico de linha add no gráfico quantidade de pontos suporte, imprevistos
+[X]. Despresar os - do clickup e calcular médias com base nisso
+[X]. Adicionar porcentagem média de execução do planejado no range
+[ ]. Criar gráfico 3d, com quantidade de pontos, sprint, somatório de suporte, imprevisto no eixo z. 
+     Ao lado, ter um gráfico estacado por sprint, com a valor de cada um desses 
+
+
+[ ]. Criar sistema de gerador automático de documentos:
+     [ ]. Adicionar dragDrop para subir os documentos que deseja clonar
+     [ ]. Definir uma lista de opções em cada campo
+     [ ]. Disponibilizar template padrão
+     [ ]. Exportar zip com o resultado final
