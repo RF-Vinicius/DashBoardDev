@@ -101,8 +101,6 @@ for spt in json:
 df = pd.DataFrame(lista_organizada, columns=colunas)
 df['dateCreate'] = df['dateCreate'].apply(lambda x: int(x))
 df = df.dropna()
-#df["dateCreate"] = df["dateCreate"].apply(lambda d: datetime.date.fromtimestamp(int(d)/1000.0))
-#df["dateUpdate"] = df["dateUpdate"].apply(lambda d: datetime.date.fromtimestamp(int(d)/1000.0))
 
 #=================Layout==================#
 app.layout = html.Div(children=[
@@ -256,10 +254,7 @@ def filtroData(dataframe, data_inicio, data_fim):
                     Input("data-fim", "value"),
                 ])
 def big_numbers(list_dev, data_inicio, data_fim):
-    """data_inicio = '01/10/2022'
-    data_fim = '31/12/2022'"""
-
-    #list_dev = ['Dante', 'Dionísio', 'Leandro', 'Leandro Gama', 'Lopes', 'Lucas', 'Ricson']
+   
     df_list_por_dev = df[df["nome"].isin(list_dev)]
     df_list_por_dev = filtroData(df_list_por_dev, data_inicio, data_fim).dropna()
     df_media = df_list_por_dev[df_list_por_dev["status"] == "executado"]['pontos'].mean()
@@ -282,9 +277,6 @@ def big_numbers(list_dev, data_inicio, data_fim):
                 ])
 def desempenho_dev(list_dev, data_inicio, data_fim):
 
-    """list_dev = ['Dante', 'Dionísio', 'Leandro', 'Leandro Gama', 'Lopes', 'Lucas', 'Ricson']
-    data_inicio = '01/08/2022'
-    data_fim = '01/12/2022'"""
     df_desempenho = df[df["nome"].isin(list_dev)]
     df_desempenho = filtroData(df_desempenho, data_inicio, data_fim)
     
