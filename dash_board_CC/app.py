@@ -486,7 +486,7 @@ def relatorio_por_dev(data_inicio, data_fim):
     ))
     fig_joao.update_layout(title_text='João')
 
-    return go.Figure(data=fig_dante), sgo.Figure(data=fig_ricson), go.Figure(data=fig_lopes), go.Figure(data=fig_gama), go.Figure(data=fig_lucas), go.Figure(data=fig_joao)
+    return go.Figure(data=fig_dante), go.Figure(data=fig_ricson), go.Figure(data=fig_lopes), go.Figure(data=fig_gama), go.Figure(data=fig_lucas), go.Figure(data=fig_joao)
 
 if __name__ == "__main__":
     app.run_server(debug=False)
