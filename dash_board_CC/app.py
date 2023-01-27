@@ -138,6 +138,19 @@ app.layout = html.Div(children=[
                                 dbc.Card(
                                     dbc.CardBody(
                                         [
+                                            html.H5("Executado Total(%)", className="card-title"),
+                                            html.H3(className="card-title", id="porcentagem-executado-total")
+                                        ]
+                                    ),
+                                style={"width": "18rem", "text-align": "center"},
+                            )
+                            ], justify='center')
+                        ], md=2),
+                        dbc.Col([
+                            dbc.Row([
+                                dbc.Card(
+                                    dbc.CardBody(
+                                        [
                                             html.H5("Executado (%)", className="card-title"),
                                             html.H3(className="card-title", id="porcentagem-executado-planejado")
                                         ]
@@ -152,7 +165,7 @@ app.layout = html.Div(children=[
                                 dbc.Card(
                                     dbc.CardBody(
                                         [
-                                            html.H5("Média por pessoa", className="card-title"),
+                                            html.H5("Média Pessoa", className="card-title"),
                                             html.H3(className="card-title", id="media-por-pessoa")
                                         ]
                                     ),
@@ -166,7 +179,7 @@ app.layout = html.Div(children=[
                                 dbc.Card(
                                     dbc.CardBody(
                                         [
-                                            html.H5("Média da equipe", className="card-title"),
+                                            html.H5("Média Equipe", className="card-title"),
                                             html.H3(className="card-title", id="media-equipe")
                                         ]
                                     ),
@@ -247,6 +260,7 @@ def filtroData(dataframe, data_inicio, data_fim):
                 Output("max-pontos-equipe", "children"),
                 Output("min-pontos-equipe", "children"),
                 Output('porcentagem-executado-planejado', 'children'),
+                Output('porcentagem-executado-total', "children"),
             
                 [
                     Input("list_dev", "value"),
@@ -254,7 +268,7 @@ def filtroData(dataframe, data_inicio, data_fim):
                     Input("data-fim", "value"),
                 ])
 def big_numbers(list_dev, data_inicio, data_fim):
-   
+
     df_list_por_dev = df[df["nome"].isin(list_dev)]
     df_list_por_dev = filtroData(df_list_por_dev, data_inicio, data_fim).dropna()
     df_media = df_list_por_dev[df_list_por_dev["status"] == "executado"]['pontos'].mean()
@@ -262,9 +276,12 @@ def big_numbers(list_dev, data_inicio, data_fim):
     df_max_pontos = df_list_por_dev[df_list_por_dev["status"] == "executado"].groupby('sprint').sum().max()
     df_min_pontos = df_list_por_dev[df_list_por_dev["status"] == "executado"].groupby('sprint').sum().min()
     df_planejado_para = df_list_por_dev[df_list_por_dev["status"] == "planejado para semana"].groupby('sprint').sum().mean()['pontos']
-    df_executado = df_list_por_dev[df_list_por_dev["status"] == "Planejado"].groupby('sprint').sum().mean()['pontos']
-    porcentagem = (df_executado * 100)/df_planejado_para
-    return round(df_media, 2), round(df_media_time['pontos'], 2), round(df_max_pontos['pontos'], 2), round(df_min_pontos['pontos'], 2), round(porcentagem, 2)
+    df_porcentagem_executadoPLanejado = df_list_por_dev[df_list_por_dev["status"] == "Planejado"].groupby('sprint').sum().mean()['pontos']
+    df_porcentagem_executadoTotal = df_list_por_dev[df_list_por_dev['status'].isin(['Planejado', 'Suporte', 'Imprevisto'])].groupby('sprint').sum().mean()['pontos']
+    
+    porcentagem_executadoPLanejado = (df_porcentagem_executadoPLanejado * 100)/df_planejado_para
+    porcentagem_executadoTotal = (df_porcentagem_executadoTotal * 100)/df_planejado_para
+    return round(df_media, 2), round(df_media_time['pontos'], 2), round(df_max_pontos['pontos'], 2), round(df_min_pontos['pontos'], 2), round(porcentagem_executadoPLanejado, 2), round(porcentagem_executadoTotal, 2)
 
 
 @app.callback([
