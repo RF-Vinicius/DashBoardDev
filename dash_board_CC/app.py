@@ -97,7 +97,7 @@ for spt in json:
       nome,
       pontos] 
     )
-
+#teste
 df = pd.DataFrame(lista_organizada, columns=colunas)
 df['dateCreate'] = df['dateCreate'].apply(lambda x: int(x))
 df = df.dropna()
